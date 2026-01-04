@@ -66,7 +66,7 @@ Use the power of the command line to manage your store cleanup efficiently.
 ### 1. List Categories
 View a table of all product categories, their IDs, slugs, and product counts.
 
-`wp shop-toolset list-categories`
+`wp store-toolset list-categories`
 
 ### 2. Run Cleanup
 Execute the cleanup process for specific categories.
@@ -80,13 +80,13 @@ Execute the cleanup process for specific categories.
 **Examples:**
 
 **Safe Simulation (Dry Run):**
-`wp shop-toolset run --category-slug=temp-collection --dry-run`
+`wp store-toolset run --category-slug=temp-collection --dry-run`
 
 **Live Cleanup (By ID):**
-`wp shop-toolset run --term-id=152,189`
+`wp store-toolset run --term-id=152,189`
 
 **Live Cleanup (By Slug):**
-`wp shop-toolset run --category-slug=clothing,accessories`
+`wp store-toolset run --category-slug=clothing,accessories`
 
 == Frequently Asked Questions ==
 
@@ -109,7 +109,7 @@ If you are trying to delete 10,000+ products, a web browser might "time out" (st
 = 1.1.0 =
 * REBRAND: Renamed plugin to **Shop Toolset for WooCommerce** to reflect its new modular architecture.
 * FEATURE: Prepared codebase for future add-on modules.
-* UPDATE: Updated WP-CLI commands to `wp shop-toolset`.
+* UPDATE: Updated WP-CLI commands to `wp store-toolset`.
 
 = 1.0.6 =
 * FEATURE: Added Search, Sort, and Pagination to the admin table.
