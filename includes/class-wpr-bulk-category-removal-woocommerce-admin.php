@@ -32,8 +32,8 @@ class WPR_Bulk_Category_Removal_Admin {
 	public function register_menu() {
 		add_submenu_page(
 			'woocommerce',
-			__( 'WPRepublic Bulk Category Removal', 'wpr-bulk-category-removal-woocommerce' ),
-			__( 'WPRepublic Bulk Category Removal', 'wpr-bulk-category-removal-woocommerce' ),
+			__( 'Bulk Category Removal', 'wpr-bulk-category-removal-woocommerce' ),
+			__( 'Bulk Category Removal', 'wpr-bulk-category-removal-woocommerce' ),
 			'manage_woocommerce',
 			self::ADMIN_SLUG,
 			[ $this, 'render_page' ]
