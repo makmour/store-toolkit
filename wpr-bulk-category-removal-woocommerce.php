@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       Store Toolset for WooCommerce
- * Plugin URI:        https://github.com/makmour/store-toolset
+ * Plugin Name:       WPRepublic Bulk Category Removal for WooCommerce
+ * Plugin URI:        https://github.com/makmour/wpr-bulk-category-removal-woocommerce
  * Description:       A suite of professional tools for WooCommerce. Includes a cleanup utility to safely bulk delete products and orphaned data.
  * Version:           1.1.0
  * Author:            WP Republic
  * Author URI:        https://wprepublic.com/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       store-toolset
+ * Text Domain:       wpr-bulk-category-removal-woocommerce
  * Domain Path:       /languages
  * Requires at least: 5.8
  * Tested up to:      6.9
@@ -22,26 +22,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'STORE_TOOLSET_VERSION', '1.1.0' );
-define( 'STORE_TOOLSET_PATH', plugin_dir_path( __FILE__ ) );
-define( 'STORE_TOOLSET_URL', plugin_dir_url( __FILE__ ) );
+define( 'WPR_BULK_CATEGORY_REMOVAL_VERSION', '1.1.0' );
+define( 'WPR_BULK_CATEGORY_REMOVAL_PATH', plugin_dir_path( __FILE__ ) );
+define( 'WPR_BULK_CATEGORY_REMOVAL_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * The main plugin class.
  */
-final class Store_Toolset {
+final class WPR_Bulk_Category_Removal {
 
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var Store_Toolset|null
+	 * @var WPR_Bulk_Category_Removal|null
 	 */
 	private static $_instance = null;
 
 	/**
 	 * Ensures only one instance of the class is loaded.
 	 *
-	 * @return Store_Toolset
+	 * @return WPR_Bulk_Category_Removal
 	 */
 	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -72,12 +72,12 @@ final class Store_Toolset {
 
 		// Instantiate classes.
 		if ( $this->is_request( 'admin' ) ) {
-			new Store_Toolset_Admin();
+			new WPR_Bulk_Category_Removal_Admin();
 		}
 
 		// WP-CLI integration.
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::add_command( 'store-toolset', 'Store_Toolset_CLI' );
+			WP_CLI::add_command( 'wpr-bulk-category-removal-woocommerce', 'WPR_Bulk_Category_Removal_CLI' );
 		}
 	}
 
@@ -85,11 +85,11 @@ final class Store_Toolset {
 	 * Include required files.
 	 */
 	private function includes() {
-		require_once STORE_TOOLSET_PATH . 'includes/class-store-toolset-core.php';
-		require_once STORE_TOOLSET_PATH . 'includes/class-store-toolset-admin.php';
+		require_once WPR_BULK_CATEGORY_REMOVAL_PATH . 'includes/class-wpr-bulk-category-removal-woocommerce-core.php';
+		require_once WPR_BULK_CATEGORY_REMOVAL_PATH . 'includes/class-wpr-bulk-category-removal-woocommerce-admin.php';
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			require_once STORE_TOOLSET_PATH . 'includes/class-store-toolset-cli.php';
+			require_once WPR_BULK_CATEGORY_REMOVAL_PATH . 'includes/class-wpr-bulk-category-removal-woocommerce-cli.php';
 		}
 	}
 
@@ -124,8 +124,8 @@ final class Store_Toolset {
 		?>
 		<div class="notice notice-error is-dismissible">
 			<p>
-				<strong><?php esc_html_e( 'Store Toolset for WooCommerce', 'store-toolset' ); ?></strong>
-				<?php esc_html_e( 'requires WooCommerce to be installed and activated.', 'store-toolset' ); ?>
+				<strong><?php esc_html_e( 'WPRepublic Bulk Category Removal for WooCommerce', 'wpr-bulk-category-removal-woocommerce' ); ?></strong>
+				<?php esc_html_e( 'requires WooCommerce to be installed and activated.', 'wpr-bulk-category-removal-woocommerce' ); ?>
 			</p>
 		</div>
 		<?php
@@ -135,11 +135,11 @@ final class Store_Toolset {
 /**
  * Begins execution of the plugin.
  *
- * @return Store_Toolset
+ * @return WPR_Bulk_Category_Removal
  */
-function store_toolset() {
-	return Store_Toolset::instance();
+function wpr_bulk_category_removal() {
+	return WPR_Bulk_Category_Removal::instance();
 }
 
 // Let's go!
-store_toolset();
+wpr_bulk_category_removal();

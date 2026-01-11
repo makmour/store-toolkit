@@ -5,15 +5,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WP-CLI integration for Store Toolset.
+ * WP-CLI integration for WPRepublic Bulk Category Removal.
  */
-class Store_Toolset_CLI {
+class WPR_Bulk_Category_Removal_CLI {
 
 	/**
 	 * List product categories.
 	 *
 	 * ## EXAMPLES
-	 * wp store-toolset list-categories
+	 * wp wpr-bulk-category-removal-woocommerce list-categories
 	 */
 	public function list_categories() {
 		$categories = get_terms(
@@ -58,11 +58,11 @@ class Store_Toolset_CLI {
 	 * : Simulate cleanup (no deletions).
 	 *
 	 * ## EXAMPLES
-	 * wp store-toolset run --term-id=12,44 --dry-run
-	 * wp store-toolset run --category-slug=clothing,accessories
+	 * wp wpr-bulk-category-removal-woocommerce run --term-id=12,44 --dry-run
+	 * wp wpr-bulk-category-removal-woocommerce run --category-slug=clothing,accessories
 	 */
 	public function run( $args, $assoc_args ) {
-		$core = new Store_Toolset_Core();
+		$core = new WPR_Bulk_Category_Removal_Core();
 
 		$dry_run = isset( $assoc_args['dry-run'] );
 

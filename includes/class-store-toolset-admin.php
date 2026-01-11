@@ -5,21 +5,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Admin UI for Store Toolset.
+ * Admin UI for WPRepublic Bulk Category Removal.
  */
-class Store_Toolset_Admin {
+class WPR_Bulk_Category_Removal_Admin {
 
-	const ADMIN_SLUG         = 'store-toolset';
-	const NONCE_ACTION       = 'store_toolset_run_nonce';
-	const FORM_ACTION        = 'store_toolset_run_form';
-	const OPTION_KEY_COLUMNS = 'store_toolset_columns';
-	const OPTION_KEY_PER_PAGE = 'store_toolset_per_page';
+	const ADMIN_SLUG         = 'wpr-bulk-category-removal-woocommerce';
+	const NONCE_ACTION       = 'wpr_bulk_category_removal_run_nonce';
+	const FORM_ACTION        = 'wpr_bulk_category_removal_run_form';
+	const OPTION_KEY_COLUMNS = 'wpr_bulk_category_removal_columns';
+	const OPTION_KEY_PER_PAGE = 'wpr_bulk_category_removal_per_page';
 
 	private $core;
 	private $log_dir;
 
 	public function __construct() {
-		$this->core = new Store_Toolset_Core();
+		$this->core = new WPR_Bulk_Category_Removal_Core();
 
 		add_action( 'admin_menu', [ $this, 'register_menu' ] );
 		add_filter( 'set-screen-option', [ $this, 'set_screen_option' ], 10, 3 );
@@ -32,8 +32,8 @@ class Store_Toolset_Admin {
 	public function register_menu() {
 		add_submenu_page(
 			'woocommerce',
-			__( 'Store Toolset', 'store-toolset' ),
-			__( 'Store Toolset', 'store-toolset' ),
+			__( 'WPRepublic Bulk Category Removal', 'wpr-bulk-category-removal-woocommerce' ),
+			__( 'WPRepublic Bulk Category Removal', 'wpr-bulk-category-removal-woocommerce' ),
 			'manage_woocommerce',
 			self::ADMIN_SLUG,
 			[ $this, 'render_page' ]
@@ -102,7 +102,7 @@ class Store_Toolset_Admin {
 
 	private function init_logs_dir() {
 		$upload_dir     = wp_upload_dir();
-		$this->log_dir  = trailingslashit( $upload_dir['basedir'] ) . 'store-toolset-logs';
+		$this->log_dir  = trailingslashit( $upload_dir['basedir'] ) . 'wpr-bulk-category-removal-woocommerce-logs';
 
 		if ( ! file_exists( $this->log_dir ) ) {
 			wp_mkdir_p( $this->log_dir );
@@ -117,17 +117,17 @@ class Store_Toolset_Admin {
 
 	public function render_page() {
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( esc_html__( 'Sorry, you are not allowed to access this page.', 'store-toolset' ) );
+			wp_die( esc_html__( 'Sorry, you are not allowed to access this page.', 'wpr-bulk-category-removal-woocommerce' ) );
 		}
 
 		$categories = $this->core->get_product_categories();
 
-		$last_log = get_transient( 'store_toolset_last_log' );
+		$last_log = get_transient( 'wpr_bulk_category_removal_last_log' );
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Store Toolset', 'store-toolset' ); ?></h1>
+			<h1><?php esc_html_e( 'WPRepublic Bulk Category Removal', 'wpr-bulk-category-removal-woocommerce' ); ?></h1>
 
-			<p><?php esc_html_e( 'Select one or more product categories and choose whether to run a Dry Run (recommended) or execute a Live Cleanup.', 'store-toolset' ); ?></p>
+			<p><?php esc_html_e( 'Select one or more product categories and choose whether to run a Dry Run (recommended) or execute a Live Cleanup.', 'wpr-bulk-category-removal-woocommerce' ); ?></p>
 
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<?php wp_nonce_field( self::NONCE_ACTION, '_wpnonce' ); ?>
@@ -136,16 +136,16 @@ class Store_Toolset_Admin {
 				<table class="widefat striped">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Select', 'store-toolset' ); ?></th>
-							<th><?php esc_html_e( 'Category', 'store-toolset' ); ?></th>
-							<th><?php esc_html_e( 'Slug', 'store-toolset' ); ?></th>
-							<th><?php esc_html_e( 'Product count', 'store-toolset' ); ?></th>
+							<th><?php esc_html_e( 'Select', 'wpr-bulk-category-removal-woocommerce' ); ?></th>
+							<th><?php esc_html_e( 'Category', 'wpr-bulk-category-removal-woocommerce' ); ?></th>
+							<th><?php esc_html_e( 'Slug', 'wpr-bulk-category-removal-woocommerce' ); ?></th>
+							<th><?php esc_html_e( 'Product count', 'wpr-bulk-category-removal-woocommerce' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php if ( empty( $categories ) ) : ?>
 							<tr>
-								<td colspan="4"><?php esc_html_e( 'No product categories found.', 'store-toolset' ); ?></td>
+								<td colspan="4"><?php esc_html_e( 'No product categories found.', 'wpr-bulk-category-removal-woocommerce' ); ?></td>
 							</tr>
 						<?php else : ?>
 							<?php foreach ( $categories as $term ) : ?>
@@ -167,19 +167,19 @@ class Store_Toolset_Admin {
 				<p style="margin-top: 12px;">
 					<label>
 						<input type="checkbox" name="dry_run" value="1" checked="checked" />
-						<?php esc_html_e( 'Dry Run (simulate only, no deletions)', 'store-toolset' ); ?>
+						<?php esc_html_e( 'Dry Run (simulate only, no deletions)', 'wpr-bulk-category-removal-woocommerce' ); ?>
 					</label>
 				</p>
 
 				<p>
 					<button type="submit" class="button button-primary">
-						<?php esc_html_e( 'Run', 'store-toolset' ); ?>
+						<?php esc_html_e( 'Run', 'wpr-bulk-category-removal-woocommerce' ); ?>
 					</button>
 				</p>
 			</form>
 
 			<?php if ( ! empty( $last_log ) ) : ?>
-				<h2><?php esc_html_e( 'Last run log', 'store-toolset' ); ?></h2>
+				<h2><?php esc_html_e( 'Last run log', 'wpr-bulk-category-removal-woocommerce' ); ?></h2>
 				<pre style="max-height: 400px; overflow: auto; background: #fff; border: 1px solid #ccd0d4; padding: 12px;"><?php echo esc_html( $last_log ); ?></pre>
 			<?php endif; ?>
 		</div>
@@ -188,7 +188,7 @@ class Store_Toolset_Admin {
 
 	public function handle_form_submission() {
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( esc_html__( 'Sorry, you are not allowed to do this.', 'store-toolset' ) );
+			wp_die( esc_html__( 'Sorry, you are not allowed to do this.', 'wpr-bulk-category-removal-woocommerce' ) );
 		}
 
 		check_admin_referer( self::NONCE_ACTION );
@@ -199,15 +199,15 @@ class Store_Toolset_Admin {
 		$dry_run = ! empty( $_POST['dry_run'] );
 
 		if ( empty( $term_ids ) ) {
-			wp_safe_redirect( add_query_arg( [ 'page' => self::ADMIN_SLUG, 'store_toolset_msg' => 'no_terms' ], admin_url( 'admin.php' ) ) );
+			wp_safe_redirect( add_query_arg( [ 'page' => self::ADMIN_SLUG, 'wpr_bulk_category_removal_msg' => 'no_terms' ], admin_url( 'admin.php' ) ) );
 			exit;
 		}
 
 		$log_output = $this->core->run_cleanup( $term_ids, $dry_run );
 
-		set_transient( 'store_toolset_last_log', $log_output, 6 * HOUR_IN_SECONDS );
+		set_transient( 'wpr_bulk_category_removal_last_log', $log_output, 6 * HOUR_IN_SECONDS );
 
-		wp_safe_redirect( add_query_arg( [ 'page' => self::ADMIN_SLUG, 'store_toolset_msg' => 'done' ], admin_url( 'admin.php' ) ) );
+		wp_safe_redirect( add_query_arg( [ 'page' => self::ADMIN_SLUG, 'wpr_bulk_category_removal_msg' => 'done' ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
 }

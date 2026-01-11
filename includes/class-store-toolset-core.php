@@ -5,22 +5,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Core functionality for Store Toolset.
+ * Core functionality for WPRepublic Bulk Category Removal.
  */
-class Store_Toolset_Core {
+class WPR_Bulk_Category_Removal_Core {
 
 	private $log_file_path;
 	private $log_dir;
 
 	public function __construct() {
 		$upload_dir = wp_upload_dir();
-		$this->log_dir = trailingslashit( $upload_dir['basedir'] ) . 'store-toolset-logs';
+		$this->log_dir = trailingslashit( $upload_dir['basedir'] ) . 'wpr-bulk-category-removal-woocommerce-logs';
 
 		if ( ! file_exists( $this->log_dir ) ) {
 			wp_mkdir_p( $this->log_dir );
 		}
 
-		$this->log_file_path = trailingslashit( $this->log_dir ) . 'store-toolset-' . gmdate( 'Y-m-d_His' ) . '.log';
+		$this->log_file_path = trailingslashit( $this->log_dir ) . 'wpr-bulk-category-removal-woocommerce-' . gmdate( 'Y-m-d_His' ) . '.log';
 	}
 
 	public function get_product_categories() {
@@ -36,7 +36,7 @@ class Store_Toolset_Core {
 		$dry_run = (bool) $dry_run;
 
 		$log = [];
-		$log[] = 'Store Toolset run started at ' . gmdate( 'c' );
+		$log[] = 'WPRepublic Bulk Category Removal run started at ' . gmdate( 'c' );
 		$log[] = 'Mode: ' . ( $dry_run ? 'DRY RUN' : 'LIVE' );
 		$log[] = 'Term IDs: ' . implode( ',', $term_ids );
 		$log[] = '------------------------------------------------------------';
@@ -46,7 +46,7 @@ class Store_Toolset_Core {
 		}
 
 		$log[] = '------------------------------------------------------------';
-		$log[] = 'Store Toolset run finished at ' . gmdate( 'c' );
+		$log[] = 'WPRepublic Bulk Category Removal run finished at ' . gmdate( 'c' );
 
 		$log_output = implode( "\n", array_filter( $log ) );
 		$this->write_log( $log_output );
