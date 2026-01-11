@@ -16,6 +16,7 @@
  * WC requires at least: 6.0
  * WC tested up to:      8.3
  * WC Blocks:           true
+ * Requires Plugins:    woocommerce
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

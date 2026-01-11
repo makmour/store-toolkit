@@ -9,10 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class WPR_Bulk_Category_Removal_Admin {
 
-	const ADMIN_SLUG         = 'wpr-bulk-category-removal-woocommerce';
-	const NONCE_ACTION       = 'wpr_bulk_category_removal_run_nonce';
-	const FORM_ACTION        = 'wpr_bulk_category_removal_run_form';
-	const OPTION_KEY_COLUMNS = 'wpr_bulk_category_removal_columns';
+	const ADMIN_SLUG          = 'wpr-bulk-category-removal-woocommerce';
+	const NONCE_ACTION        = 'wpr_bulk_category_removal_run_nonce';
+	const FORM_ACTION         = 'wpr_bulk_category_removal_run_form';
+	const OPTION_KEY_COLUMNS  = 'wpr_bulk_category_removal_columns';
 	const OPTION_KEY_PER_PAGE = 'wpr_bulk_category_removal_per_page';
 
 	private $core;
@@ -82,14 +82,15 @@ class WPR_Bulk_Category_Removal_Admin {
 
 		$valid_keys = [ 'image', 'description', 'slug', 'count' ];
 
-		$posted_columns = isset( $_POST[ self::OPTION_KEY_COLUMNS ] ) ? wp_unslash( $_POST[ self::OPTION_KEY_COLUMNS ] ) : [];
-		if ( ! is_array( $posted_columns ) ) {
-			$posted_columns = [];
+		// FIX: Sanitize immediately using array_map to satisfy security scanners.
+		$posted_columns = [];
+		if ( isset( $_POST[ self::OPTION_KEY_COLUMNS ] ) && is_array( $_POST[ self::OPTION_KEY_COLUMNS ] ) ) {
+			$posted_columns = array_map( 'sanitize_key', wp_unslash( $_POST[ self::OPTION_KEY_COLUMNS ] ) );
 		}
 
 		$columns = array_values(
 			array_intersect(
-				array_map( 'sanitize_key', $posted_columns ),
+				$posted_columns,
 				$valid_keys
 			)
 		);
@@ -193,8 +194,12 @@ class WPR_Bulk_Category_Removal_Admin {
 
 		check_admin_referer( self::NONCE_ACTION );
 
-		$term_ids = isset( $_POST['term_ids'] ) ? (array) wp_unslash( $_POST['term_ids'] ) : [];
-		$term_ids = array_filter( array_map( 'absint', $term_ids ) );
+		// FIX: Sanitize immediately using array_map to satisfy security scanners.
+		$term_ids = [];
+		if ( isset( $_POST['term_ids'] ) && is_array( $_POST['term_ids'] ) ) {
+			$term_ids = array_map( 'absint', wp_unslash( $_POST['term_ids'] ) );
+		}
+		$term_ids = array_filter( $term_ids );
 
 		$dry_run = ! empty( $_POST['dry_run'] );
 
